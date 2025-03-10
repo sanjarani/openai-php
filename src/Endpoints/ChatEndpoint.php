@@ -33,11 +33,26 @@ class ChatEndpoint
             $params['temperature'] = 0.7;
         }
 
-        $response = $this->client->post('/chat/completions', [
-            'json' => $params
-        ]);
+        try {
+            $response = $this->client->post('/chat/completions', [
+                'json' => $params
+            ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+            $body = $response->getBody()->getContents();
+            $data = json_decode($body, true);
+
+            if ($data === null) {
+                throw new \Exception('Failed to decode response from OpenAI API');
+            }
+
+            if (isset($data['error'])) {
+                throw new \Exception('OpenAI API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
+            }
+
+            return $data;
+        } catch (GuzzleException $e) {
+            throw new \Exception('HTTP Request Failed: ' . $e->getMessage());
+        }
     }
 
     /**
