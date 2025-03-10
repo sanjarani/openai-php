@@ -25,7 +25,7 @@ class ChatEndpoint
      */
     public function create(array $params): array
     {
-        if (!isset($params['model'])) {
+        if (!isset($params['model']) || empty($params['model'])) {
             $params['model'] = $this->defaultModel;
         }
 
@@ -36,9 +36,17 @@ class ChatEndpoint
         try {
             $response = $this->client->post('/chat/completions', [
                 'json' => $params,
-                'debug' => true,
                 'headers' => [
                     'Content-Type' => 'application/json',
+                ],
+                'curl' => [
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false,
                 ]
             ]);
 
@@ -49,7 +57,6 @@ class ChatEndpoint
             
             $data = json_decode($body, true);
             
-            // چک کردن خطای json_decode
             if ($data === null) {
                 $jsonError = json_last_error_msg();
                 throw new \Exception("Failed to decode response: $jsonError\nRaw response: $body");
@@ -61,7 +68,8 @@ class ChatEndpoint
 
             return $data;
         } catch (GuzzleException $e) {
-            throw new \Exception('HTTP Request Failed: ' . $e->getMessage() . "\nRequest: " . json_encode($params));
+            $requestBody = json_encode($params, JSON_UNESCAPED_UNICODE);
+            throw new \Exception('HTTP Request Failed: ' . $e->getMessage() . "\nRequest Body: " . $requestBody);
         }
     }
 
