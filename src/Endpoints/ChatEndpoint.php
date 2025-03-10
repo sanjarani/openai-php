@@ -34,19 +34,10 @@ class ChatEndpoint
         }
 
         try {
-            $response = $this->client->post('/chat/completions', [
+            $response = $this->client->post('chat/completions', [
                 'json' => $params,
                 'headers' => [
                     'Content-Type' => 'application/json',
-                ],
-                'curl' => [
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 30,
-                    CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST => false,
                 ]
             ]);
 
@@ -64,6 +55,10 @@ class ChatEndpoint
 
             if (isset($data['error'])) {
                 throw new \Exception('OpenAI API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
+            }
+
+            if ($response->getStatusCode() !== 200) {
+                throw new \Exception('HTTP Error: ' . $response->getStatusCode() . ' - ' . $body);
             }
 
             return $data;

@@ -27,25 +27,31 @@ class OpenAI
     {
         $this->config = $config;
         $this->apiKey = $config['api_key'] ?? '';
-        $this->baseUrl = $this->getBaseUrl($config['api_version'] ?? self::API_VERSION_V1);
-        $this->defaultModels = $config['models'] ?? [];
+        $this->baseUrl = $config['base_url'] ?? 'https://api.openai.com/v1';
+        $this->defaultModels = $config['models'] ?? [
+            'chat' => 'gpt-3.5-turbo',
+            'completion' => 'text-davinci-003',
+            'embedding' => 'text-embedding-ada-002',
+            'fine_tune' => 'davinci'
+        ];
         
-        $this->client = new Client([
+        $clientConfig = [
             'base_uri' => $this->baseUrl,
-            'headers' => [
+            'headers' => $config['headers'] ?? [
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
                 'OpenAI-Organization' => $config['organization_id'] ?? null,
             ],
             'timeout' => $config['timeout'] ?? 30,
             'http_errors' => false,
-        ]);
-    }
+            'verify' => $config['verify'] ?? true,
+        ];
 
-    private function getBaseUrl(string $version): string
-    {
-        $baseUrl = $this->config['base_url'] ?? 'https://api.openai.com';
-        return rtrim($baseUrl, '/') . '/' . $version;
+        if (isset($config['curl']) && is_array($config['curl'])) {
+            $clientConfig['curl'] = $config['curl'];
+        }
+
+        $this->client = new Client($clientConfig);
     }
 
     public function getDefaultModel(string $type): string
