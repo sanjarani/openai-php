@@ -35,14 +35,24 @@ class ChatEndpoint
 
         try {
             $response = $this->client->post('/chat/completions', [
-                'json' => $params
+                'json' => $params,
+                'debug' => true,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ]
             ]);
 
             $body = $response->getBody()->getContents();
+            
+            // برای دیباگ
+            echo "Raw Response: " . $body . "\n";
+            
             $data = json_decode($body, true);
-
+            
+            // چک کردن خطای json_decode
             if ($data === null) {
-                throw new \Exception('Failed to decode response from OpenAI API');
+                $jsonError = json_last_error_msg();
+                throw new \Exception("Failed to decode response: $jsonError\nRaw response: $body");
             }
 
             if (isset($data['error'])) {
@@ -51,7 +61,7 @@ class ChatEndpoint
 
             return $data;
         } catch (GuzzleException $e) {
-            throw new \Exception('HTTP Request Failed: ' . $e->getMessage());
+            throw new \Exception('HTTP Request Failed: ' . $e->getMessage() . "\nRequest: " . json_encode($params));
         }
     }
 
