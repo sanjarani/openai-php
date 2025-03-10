@@ -1,5 +1,7 @@
 /vendor/
 .idea/
+check/
 .vscode/
 *.log
-.DS_Store 
+.DS_Store
+test.php
