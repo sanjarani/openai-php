@@ -2,8 +2,15 @@
 
 namespace Sanjarani\OpenAI\Endpoints;
 
+use GuzzleHttp\Client;
+
 class ThreadEndpoint extends AbstractEndpoint
 {
+    public function __construct(Client $client, string $versionPrefix)
+    {
+        parent::__construct($client, $versionPrefix);
+    }
+
     /**
      * Create a new thread.
      *
