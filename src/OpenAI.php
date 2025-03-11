@@ -11,6 +11,7 @@ use Sanjarani\OpenAI\Endpoints\FineTuneEndpoint;
 use Sanjarani\OpenAI\Endpoints\ImageEndpoint;
 use Sanjarani\OpenAI\Endpoints\ModelEndpoint;
 use Sanjarani\OpenAI\Endpoints\ModerationEndpoint;
+use Sanjarani\OpenAI\Endpoints\AssistantEndpoint;
 
 class OpenAI
 {
@@ -103,5 +104,13 @@ class OpenAI
     public function model(): ModelEndpoint
     {
         return new ModelEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * Get the Assistants API endpoint
+     */
+    public function assistants(): AssistantEndpoint
+    {
+        return new AssistantEndpoint($this->client, $this->getVersionPrefix());
     }
 } 

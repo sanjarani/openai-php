@@ -894,3 +894,172 @@ $response = OpenAI::model()->delete('ft-abc123');
 ```bash
 composer test
 ```
+
+## Support
+
+For support and contact with the author, you can use the following methods:
+- Email: kiyarash.sanjarani@gmail.com
+- Phone: +989120414977
+- Telegram: @ksv20
+
+## License
+
+MIT
+
+## Company
+
+This package is developed by ARYMU LLC.
+
+---
+
+# OpenAI PHP SDK
+
+A PHP SDK for the OpenAI API with support for all endpoints and features.
+
+## Installation
+
+```bash
+composer require sanjarani/openai-php
+```
+
+## Configuration
+
+Add your OpenAI API key to your `.env` file:
+
+```env
+OPENAI_API_KEY=your-api-key-here
+OPENAI_ORGANIZATION=your-organization-id-here  # Optional
+```
+
+## Usage
+
+### Assistants & Tools
+
+```php
+use Sanjarani\OpenAI\OpenAI;
+use Sanjarani\OpenAI\Tools\FunctionTool;
+use Sanjarani\OpenAI\Tools\RetrievalTool;
+use Sanjarani\OpenAI\Tools\CodeInterpreterTool;
+
+$openai = new OpenAI(['api_key' => 'your-api-key']);
+
+// Create tools
+$weatherTool = FunctionTool::create(
+    'get_weather',
+    'Get the current weather in a location',
+    [
+        'location' => [
+            'type' => 'string',
+            'description' => 'The city and state, e.g. San Francisco, CA',
+            'required' => true
+        ],
+        'unit' => [
+            'type' => 'string',
+            'enum' => ['celsius', 'fahrenheit'],
+            'description' => 'The unit for the temperature',
+            'required' => false
+        ]
+    ]
+);
+
+// Retrieval tool for searching through documents
+$retrievalTool = RetrievalTool::create();
+
+// Code interpreter tool for executing code
+$codeInterpreterTool = CodeInterpreterTool::create();
+
+// Create an assistant with multiple tools
+$assistant = $openai->assistants()->create([
+    'name' => 'Multi-Tool Assistant',
+    'instructions' => 'You are a versatile assistant that can help with weather information, document search, and code execution.',
+    'model' => 'gpt-4-turbo-preview',
+    'tools' => [$weatherTool, $retrievalTool, $codeInterpreterTool]
+]);
+
+// List all assistants
+$assistants = $openai->assistants()->list();
+
+// Retrieve a specific assistant
+$assistant = $openai->assistants()->retrieve('asst_abc123');
+
+// Update an assistant
+$updatedAssistant = $openai->assistants()->update('asst_abc123', [
+    'name' => 'Updated Assistant'
+], [$weatherTool, $retrievalTool]);
+
+// Delete an assistant
+$openai->assistants()->delete('asst_abc123');
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+use Sanjarani\OpenAI\Tools\FunctionTool;
+use Sanjarani\OpenAI\Tools\RetrievalTool;
+use Sanjarani\OpenAI\Tools\CodeInterpreterTool;
+
+// Create tools
+$weatherTool = FunctionTool::create(
+    'get_weather',
+    'Get the current weather in a location',
+    [
+        'location' => [
+            'type' => 'string',
+            'description' => 'The city and state',
+            'required' => true
+        ]
+    ]
+);
+
+$retrievalTool = RetrievalTool::create();
+$codeInterpreterTool = CodeInterpreterTool::create();
+
+// Create an assistant with tools
+$assistant = OpenAI::assistants()->create([
+    'name' => 'Multi-Tool Assistant',
+    'instructions' => 'You help with various tasks',
+    'model' => 'gpt-4-turbo-preview',
+    'tools' => [$weatherTool, $retrievalTool, $codeInterpreterTool]
+]);
+
+// List all assistants
+$assistants = OpenAI::assistants()->list();
+
+// Retrieve a specific assistant
+$assistant = OpenAI::assistants()->retrieve('asst_abc123');
+
+// Update an assistant
+$updatedAssistant = OpenAI::assistants()->update('asst_abc123', [
+    'name' => 'Updated Assistant'
+], [$weatherTool, $retrievalTool]);
+
+// Delete an assistant
+OpenAI::assistants()->delete('asst_abc123');
+```
+
+### Available Tools
+
+1. **Function Tool**: Define custom functions that the assistant can use
+```php
+$functionTool = FunctionTool::create(
+    'function_name',
+    'function description',
+    [
+        'parameter_name' => [
+            'type' => 'string|number|boolean|array|object',
+            'description' => 'Parameter description',
+            'required' => true|false
+        ]
+    ]
+);
+```
+
+2. **Retrieval Tool**: Enable the assistant to search and retrieve information from uploaded files
+```php
+$retrievalTool = RetrievalTool::create();
+```
+
+3. **Code Interpreter Tool**: Allow the assistant to write, execute, and debug code
+```php
+$codeInterpreterTool = CodeInterpreterTool::create();
+```
+
+[... rest of the documentation ...]
