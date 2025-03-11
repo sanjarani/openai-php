@@ -46,6 +46,7 @@ class OpenAI
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
                 'OpenAI-Organization' => $config['organization_id'] ?? null,
+                'OpenAI-Beta' => 'assistants=v2'
             ],
             'timeout' => $config['timeout'] ?? 30,
             'http_errors' => false,
