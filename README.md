@@ -1,5 +1,10 @@
 # OpenAI PHP Package
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
+[![Total Downloads](https://img.shields.io/packagist/dt/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
+[![License](https://img.shields.io/packagist/l/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
+[![PHP Version](https://img.shields.io/packagist/php-v/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
+
 [English](#english) | [فارسی](#فارسی)
 
 <a name="english"></a>
@@ -1414,6 +1419,60 @@ $retrievalTool = RetrievalTool::create();
 3. **Code Interpreter Tool**: Allow the assistant to write, execute, and debug code
 ```php
 $codeInterpreterTool = CodeInterpreterTool::create();
+```
+
+### Responses API
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+
+$openai = new OpenAI([
+    'api_key' => 'your-api-key-here'
+]);
+
+// ایجاد یک پاسخ
+$response = $openai->responses()->create('thread_abc123', 'run_xyz789', [
+    'content' => 'این یک پاسخ تست است.',
+    'role' => 'assistant',
+    'metadata' => [
+        'key' => 'value'
+    ]
+]);
+
+// دریافت لیست پاسخ‌ها
+$responses = $openai->responses()->list('thread_abc123', 'run_xyz789', [
+    'limit' => 10,
+    'order' => 'desc'
+]);
+
+// دریافت یک پاسخ خاص
+$response = $openai->responses()->retrieve('thread_abc123', 'run_xyz789', 'resp_abc123');
+
+// به‌روزرسانی یک پاسخ
+$updatedResponse = $openai->responses()->update('thread_abc123', 'run_xyz789', 'resp_abc123', [
+    'content' => 'این پاسخ به‌روز شده است.'
+]);
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+
+// ایجاد پاسخ
+$response = OpenAI::responses()->create('thread_abc123', 'run_xyz789', [
+    'content' => 'این یک پاسخ تست است.',
+    'role' => 'assistant'
+]);
+
+// دریافت لیست پاسخ‌ها
+$responses = OpenAI::responses()->list('thread_abc123', 'run_xyz789');
+
+// دریافت یک پاسخ خاص
+$response = OpenAI::responses()->retrieve('thread_abc123', 'run_xyz789', 'resp_abc123');
+
+// به‌روزرسانی پاسخ
+$updatedResponse = OpenAI::responses()->update('thread_abc123', 'run_xyz789', 'resp_abc123', [
+    'content' => 'این پاسخ به‌روز شده است.'
+]);
 ```
 
 [... rest of the documentation ...]

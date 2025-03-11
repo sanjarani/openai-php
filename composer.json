@@ -1,39 +1,34 @@
 {
-    "name": "sanjarani/openai-php",
-    "description": "A PHP SDK for the OpenAI API with support for all endpoints and features",
+    "name": "sanjarani/openai",
+    "description": "A PHP package for easy integration with OpenAI API, including GPT-4, Assistants, and Tools support",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Kiyarash Sanjarani",
-            "email": "kiyarash.sanjarani@gmail.com"
+            "name": "Amir Sanjarani",
+            "email": "amir@sanjarani.dev"
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.1",
         "guzzlehttp/guzzle": "^7.0",
         "ext-json": "*"
     },
     "require-dev": {
-        "symfony/var-dumper": "^6.0"
+        "phpunit/phpunit": "^10.0",
+        "mockery/mockery": "^1.5",
+        "laravel/framework": "^10.0"
     },
     "autoload": {
         "psr-4": {
             "Sanjarani\\OpenAI\\": "src/"
         }
     },
-    "keywords": [
-        "openai",
-        "gpt",
-        "api",
-        "sdk",
-        "php",
-        "ai",
-        "chatgpt",
-        "dall-e",
-        "whisper",
-        "fine-tuning"
-    ],
+    "autoload-dev": {
+        "psr-4": {
+            "Sanjarani\\OpenAI\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -43,5 +38,18 @@
                 "OpenAI": "Sanjarani\\OpenAI\\Facades\\OpenAI"
             }
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "keywords": [
+        "openai",
+        "gpt",
+        "gpt-4",
+        "chatgpt",
+        "ai",
+        "laravel",
+        "php",
+        "assistants",
+        "tools"
+    ]
 } 
