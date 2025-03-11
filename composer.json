@@ -33,5 +33,15 @@
         "dall-e",
         "whisper",
         "fine-tuning"
-    ]
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sanjarani\\OpenAI\\OpenAIServiceProvider"
+            ],
+            "aliases": {
+                "OpenAI": "Sanjarani\\OpenAI\\Facades\\OpenAI"
+            }
+        }
+    }
 } 
