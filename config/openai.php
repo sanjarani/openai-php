@@ -5,7 +5,7 @@ use Sanjarani\OpenAI\OpenAI;
 return [
     'openai' => [
         'api_key' => env('OPENAI_API_KEY'),
-        'organization_id' => env('OPENAI_ORGANIZATION_ID'),
+        'organization' => env('OPENAI_ORGANIZATION', null),
         'api_version' => env('OPENAI_API_VERSION', OpenAI::API_VERSION_V1),
         'base_url' => env('OPENAI_BASE_URL', 'https://api.openai.com'),
         'timeout' => env('OPENAI_TIMEOUT', 30),
