@@ -12,6 +12,7 @@ use Sanjarani\OpenAI\Endpoints\ImageEndpoint;
 use Sanjarani\OpenAI\Endpoints\ModelEndpoint;
 use Sanjarani\OpenAI\Endpoints\ModerationEndpoint;
 use Sanjarani\OpenAI\Endpoints\AssistantEndpoint;
+use Sanjarani\OpenAI\Endpoints\ThreadEndpoint;
 
 class OpenAI
 {
@@ -112,5 +113,15 @@ class OpenAI
     public function assistants(): AssistantEndpoint
     {
         return new AssistantEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * Get the threads endpoint.
+     *
+     * @return ThreadEndpoint
+     */
+    public function threads(): ThreadEndpoint
+    {
+        return new ThreadEndpoint($this->client, $this->getVersionPrefix());
     }
 } 
