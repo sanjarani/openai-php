@@ -367,72 +367,207 @@ $response = OpenAI::model()->retrieve('gpt-3.5-turbo');
 $response = OpenAI::model()->delete('ft-abc123');
 ```
 
-## Features
+### Assistants & Tools
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+use Sanjarani\OpenAI\Tools\FunctionTool;
+use Sanjarani\OpenAI\Tools\RetrievalTool;
+use Sanjarani\OpenAI\Tools\CodeInterpreterTool;
+
+$openai = new OpenAI(['api_key' => 'your-api-key']);
+
+// ایجاد ابزارها
+$weatherTool = FunctionTool::create(
+    'get_weather',
+    'دریافت آب و هوای فعلی در یک مکان',
+    [
+        'location' => [
+            'type' => 'string',
+            'description' => 'شهر و استان، مثال: تهران، ایران',
+            'required' => true
+        ],
+        'unit' => [
+            'type' => 'string',
+            'enum' => ['celsius', 'fahrenheit'],
+            'description' => 'واحد دما',
+            'required' => false
+        ]
+    ]
+);
+
+// ابزار جستجو در اسناد
+$retrievalTool = RetrievalTool::create();
+
+// ابزار اجرای کد
+$codeInterpreterTool = CodeInterpreterTool::create();
+
+// ایجاد یک دستیار با چندین ابزار
+$assistant = $openai->assistants()->create([
+    'name' => 'دستیار چند منظوره',
+    'instructions' => 'شما یک دستیار چند منظوره هستید که می‌توانید در زمینه اطلاعات آب و هوا، جستجوی اسناد و اجرای کد کمک کنید.',
+    'model' => 'gpt-4-turbo-preview',
+    'tools' => [$weatherTool, $retrievalTool, $codeInterpreterTool]
+]);
+
+// لیست تمام دستیارها
+$assistants = $openai->assistants()->list();
+
+// دریافت یک دستیار خاص
+$assistant = $openai->assistants()->retrieve('asst_abc123');
+
+// به‌روزرسانی یک دستیار
+$updatedAssistant = $openai->assistants()->update('asst_abc123', [
+    'name' => 'دستیار به‌روز شده'
+], [$weatherTool, $retrievalTool]);
+
+// حذف یک دستیار
+$openai->assistants()->delete('asst_abc123');
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+use Sanjarani\OpenAI\Tools\FunctionTool;
+use Sanjarani\OpenAI\Tools\RetrievalTool;
+use Sanjarani\OpenAI\Tools\CodeInterpreterTool;
+
+// ایجاد ابزارها
+$weatherTool = FunctionTool::create(
+    'get_weather',
+    'دریافت آب و هوای فعلی در یک مکان',
+    [
+        'location' => [
+            'type' => 'string',
+            'description' => 'شهر و استان',
+            'required' => true
+        ]
+    ]
+);
+
+$retrievalTool = RetrievalTool::create();
+$codeInterpreterTool = CodeInterpreterTool::create();
+
+// ایجاد یک دستیار با ابزارها
+$assistant = OpenAI::assistants()->create([
+    'name' => 'دستیار چند منظوره',
+    'instructions' => 'شما در زمینه‌های مختلف کمک می‌کنید',
+    'model' => 'gpt-4-turbo-preview',
+    'tools' => [$weatherTool, $retrievalTool, $codeInterpreterTool]
+]);
+
+// لیست تمام دستیارها
+$assistants = OpenAI::assistants()->list();
+
+// دریافت یک دستیار خاص
+$assistant = OpenAI::assistants()->retrieve('asst_abc123');
+
+// به‌روزرسانی یک دستیار
+$updatedAssistant = OpenAI::assistants()->update('asst_abc123', [
+    'name' => 'دستیار به‌روز شده'
+], [$weatherTool, $retrievalTool]);
+
+// حذف یک دستیار
+OpenAI::assistants()->delete('asst_abc123');
+```
+
+### ابزارهای موجود
+
+1. **Function Tool**: تعریف توابع سفارشی که دستیار می‌تواند از آنها استفاده کند
+```php
+$functionTool = FunctionTool::create(
+    'نام_تابع',
+    'توضیحات تابع',
+    [
+        'نام_پارامتر' => [
+            'type' => 'string|number|boolean|array|object',
+            'description' => 'توضیحات پارامتر',
+            'required' => true|false
+        ]
+    ]
+);
+```
+
+2. **Retrieval Tool**: امکان جستجو و بازیابی اطلاعات از فایل‌های آپلود شده
+```php
+$retrievalTool = RetrievalTool::create();
+```
+
+3. **Code Interpreter Tool**: امکان نوشتن، اجرا و اشکال‌زدایی کد
+```php
+$codeInterpreterTool = CodeInterpreterTool::create();
+```
+
+## ویژگی‌ها
 
 ### Chat Endpoint
-- Create chat completions
-- Streaming support
+- ایجاد چت
+- پشتیبانی از streaming
 
 ### Completion Endpoint
-- Text completion
-- Streaming support
+- تکمیل متن
+- پشتیبانی از streaming
 
 ### Embedding Endpoint
-- Text to vector conversion
+- تبدیل متن به بردار
 
 ### Image Endpoint
-- Image generation
-- Image variations
-- Image editing
+- تولید تصویر
+- ایجاد تغییرات در تصویر
+- ویرایش تصویر
 
 ### Moderation Endpoint
-- Content moderation
+- بررسی محتوای نامناسب
 
 ### FineTune Endpoint
-- Create custom models
-- List fine-tuning jobs
-- Retrieve fine-tuning information
-- Cancel fine-tuning
-- List fine-tuning events
-- Delete fine-tuned models
+- ایجاد مدل سفارشی
+- لیست مدل‌های سفارشی
+- دریافت اطلاعات مدل
+- لغو آموزش
+- لیست رویدادها
+- حذف مدل
 
 ### Model Endpoint
-- List models
-- Retrieve model information
-- Delete models
+- لیست مدل‌ها
+- دریافت اطلاعات مدل
+- حذف مدل
+
+### Assistants & Tools
+- ایجاد دستیارها
+- به‌روزرسانی دستیارها
+- حذف دستیارها
 
 ### General Features
-- Full OpenAI API support
-- Laravel integration
-- Unit tests
-- Comprehensive documentation
-- PSR-4 compliance
-- Error handling
-- Streaming support (where supported by OpenAI API)
+- پشتیبانی کامل از API OpenAI
+- سازگار با Laravel
+- تست‌های واحد
+- مستندات کامل
+- پشتیبانی از PSR-4
+- مدیریت خطاها
+- پشتیبانی از streaming (در مواردی که API OpenAI از آن پشتیبانی می‌کند)
 
 ### API Version Support
-- Support for both v1 and v2 API versions
-- Configurable base URL
-- Organization ID support
-- Customizable timeout
+- پشتیبانی از نسخه‌های v1 و v2
+- آدرس پایه قابل تنظیم
+- پشتیبانی از شناسه سازمان
+- زمان‌سنج قابل تنظیم
 
 ### Error Handling
-- Comprehensive error handling
-- HTTP error handling
-- API error responses
-- Network timeout handling
+- مدیریت جامع خطاها
+- مدیریت خطاهای HTTP
+- پاسخ‌های خطای API
+- مدیریت زمان‌سنج شبکه
 
 ### Security
-- Secure API key handling
-- Organization-level access control
-- HTTPS-only communication
-- Input validation
+- مدیریت امن کلید API
+- کنترل دسترسی در سطح سازمان
+- ارتباط فقط از طریق HTTPS
+- اعتبارسنجی ورودی
 
 ### Performance
-- Connection pooling
-- Request timeout configuration
-- Response streaming support
-- Efficient memory usage
+- استخر اتصال
+- تنظیم زمان‌سنج درخواست
+- پشتیبانی از streaming پاسخ
+- مصرف کارآمد حافظه
 
 ## Testing
 
@@ -822,6 +957,136 @@ $response = OpenAI::model()->retrieve('gpt-3.5-turbo');
 $response = OpenAI::model()->delete('ft-abc123');
 ```
 
+### Assistants & Tools
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+use Sanjarani\OpenAI\Tools\FunctionTool;
+use Sanjarani\OpenAI\Tools\RetrievalTool;
+use Sanjarani\OpenAI\Tools\CodeInterpreterTool;
+
+$openai = new OpenAI(['api_key' => 'your-api-key']);
+
+// ایجاد ابزارها
+$weatherTool = FunctionTool::create(
+    'get_weather',
+    'دریافت آب و هوای فعلی در یک مکان',
+    [
+        'location' => [
+            'type' => 'string',
+            'description' => 'شهر و استان، مثال: تهران، ایران',
+            'required' => true
+        ],
+        'unit' => [
+            'type' => 'string',
+            'enum' => ['celsius', 'fahrenheit'],
+            'description' => 'واحد دما',
+            'required' => false
+        ]
+    ]
+);
+
+// ابزار جستجو در اسناد
+$retrievalTool = RetrievalTool::create();
+
+// ابزار اجرای کد
+$codeInterpreterTool = CodeInterpreterTool::create();
+
+// ایجاد یک دستیار با چندین ابزار
+$assistant = $openai->assistants()->create([
+    'name' => 'دستیار چند منظوره',
+    'instructions' => 'شما یک دستیار چند منظوره هستید که می‌توانید در زمینه اطلاعات آب و هوا، جستجوی اسناد و اجرای کد کمک کنید.',
+    'model' => 'gpt-4-turbo-preview',
+    'tools' => [$weatherTool, $retrievalTool, $codeInterpreterTool]
+]);
+
+// لیست تمام دستیارها
+$assistants = $openai->assistants()->list();
+
+// دریافت یک دستیار خاص
+$assistant = $openai->assistants()->retrieve('asst_abc123');
+
+// به‌روزرسانی یک دستیار
+$updatedAssistant = $openai->assistants()->update('asst_abc123', [
+    'name' => 'دستیار به‌روز شده'
+], [$weatherTool, $retrievalTool]);
+
+// حذف یک دستیار
+$openai->assistants()->delete('asst_abc123');
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+use Sanjarani\OpenAI\Tools\FunctionTool;
+use Sanjarani\OpenAI\Tools\RetrievalTool;
+use Sanjarani\OpenAI\Tools\CodeInterpreterTool;
+
+// ایجاد ابزارها
+$weatherTool = FunctionTool::create(
+    'get_weather',
+    'دریافت آب و هوای فعلی در یک مکان',
+    [
+        'location' => [
+            'type' => 'string',
+            'description' => 'شهر و استان',
+            'required' => true
+        ]
+    ]
+);
+
+$retrievalTool = RetrievalTool::create();
+$codeInterpreterTool = CodeInterpreterTool::create();
+
+// ایجاد یک دستیار با ابزارها
+$assistant = OpenAI::assistants()->create([
+    'name' => 'دستیار چند منظوره',
+    'instructions' => 'شما در زمینه‌های مختلف کمک می‌کنید',
+    'model' => 'gpt-4-turbo-preview',
+    'tools' => [$weatherTool, $retrievalTool, $codeInterpreterTool]
+]);
+
+// لیست تمام دستیارها
+$assistants = OpenAI::assistants()->list();
+
+// دریافت یک دستیار خاص
+$assistant = OpenAI::assistants()->retrieve('asst_abc123');
+
+// به‌روزرسانی یک دستیار
+$updatedAssistant = OpenAI::assistants()->update('asst_abc123', [
+    'name' => 'دستیار به‌روز شده'
+], [$weatherTool, $retrievalTool]);
+
+// حذف یک دستیار
+OpenAI::assistants()->delete('asst_abc123');
+```
+
+### ابزارهای موجود
+
+1. **Function Tool**: تعریف توابع سفارشی که دستیار می‌تواند از آنها استفاده کند
+```php
+$functionTool = FunctionTool::create(
+    'نام_تابع',
+    'توضیحات تابع',
+    [
+        'نام_پارامتر' => [
+            'type' => 'string|number|boolean|array|object',
+            'description' => 'توضیحات پارامتر',
+            'required' => true|false
+        ]
+    ]
+);
+```
+
+2. **Retrieval Tool**: امکان جستجو و بازیابی اطلاعات از فایل‌های آپلود شده
+```php
+$retrievalTool = RetrievalTool::create();
+```
+
+3. **Code Interpreter Tool**: امکان نوشتن، اجرا و اشکال‌زدایی کد
+```php
+$codeInterpreterTool = CodeInterpreterTool::create();
+```
+
 ## ویژگی‌ها
 
 ### Chat Endpoint
@@ -856,7 +1121,12 @@ $response = OpenAI::model()->delete('ft-abc123');
 - دریافت اطلاعات مدل
 - حذف مدل
 
-### ویژگی‌های عمومی
+### Assistants & Tools
+- ایجاد دستیارها
+- به‌روزرسانی دستیارها
+- حذف دستیارها
+
+### General Features
 - پشتیبانی کامل از API OpenAI
 - سازگار با Laravel
 - تست‌های واحد
@@ -865,25 +1135,25 @@ $response = OpenAI::model()->delete('ft-abc123');
 - مدیریت خطاها
 - پشتیبانی از streaming (در مواردی که API OpenAI از آن پشتیبانی می‌کند)
 
-### پشتیبانی از نسخه‌های API
+### API Version Support
 - پشتیبانی از نسخه‌های v1 و v2
 - آدرس پایه قابل تنظیم
 - پشتیبانی از شناسه سازمان
 - زمان‌سنج قابل تنظیم
 
-### مدیریت خطاها
+### Error Handling
 - مدیریت جامع خطاها
 - مدیریت خطاهای HTTP
 - پاسخ‌های خطای API
 - مدیریت زمان‌سنج شبکه
 
-### امنیت
+### Security
 - مدیریت امن کلید API
 - کنترل دسترسی در سطح سازمان
 - ارتباط فقط از طریق HTTPS
 - اعتبارسنجی ورودی
 
-### عملکرد
+### Performance
 - استخر اتصال
 - تنظیم زمان‌سنج درخواست
 - پشتیبانی از streaming پاسخ
