@@ -8,10 +8,12 @@ use GuzzleHttp\Exception\GuzzleException;
 class ModelEndpoint
 {
     private Client $client;
+    private string $versionPrefix;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, string $versionPrefix = '/v1')
     {
         $this->client = $client;
+        $this->versionPrefix = $versionPrefix;
     }
 
     /**
@@ -22,36 +24,54 @@ class ModelEndpoint
      */
     public function list(): array
     {
-        $response = $this->client->get('/models');
+        $response = $this->client->get(ltrim($this->versionPrefix . '/models', '/'));
 
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Failed to decode response: ' . json_last_error_msg());
+        }
+        
+        return $result;
     }
 
     /**
      * Retrieve a model
      *
-     * @param string $model
+     * @param string $modelId
      * @return array
      * @throws GuzzleException
      */
-    public function retrieve(string $model): array
+    public function retrieve(string $modelId): array
     {
-        $response = $this->client->get("/models/{$model}");
+        $response = $this->client->get(ltrim($this->versionPrefix . '/models/' . $modelId, '/'));
 
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Failed to decode response: ' . json_last_error_msg());
+        }
+        
+        return $result;
     }
 
     /**
-     * Delete a model
+     * Delete a fine-tuned model
      *
-     * @param string $model
+     * @param string $modelId
      * @return array
      * @throws GuzzleException
      */
-    public function delete(string $model): array
+    public function delete(string $modelId): array
     {
-        $response = $this->client->delete("/models/{$model}");
+        $response = $this->client->delete(ltrim($this->versionPrefix . '/models/' . $modelId, '/'));
 
-        return json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->getBody()->getContents(), true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Failed to decode response: ' . json_last_error_msg());
+        }
+        
+        return $result;
     }
 } 

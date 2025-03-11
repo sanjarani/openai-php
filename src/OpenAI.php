@@ -33,9 +33,9 @@ class OpenAI
         
         $this->defaultModels = $config['models'] ?? [
             'chat' => 'gpt-3.5-turbo',
-            'completion' => 'text-davinci-003',
+            'completion' => 'gpt-3.5-turbo-instruct',
             'embedding' => 'text-embedding-ada-002',
-            'fine_tune' => 'davinci'
+            'fine_tune' => 'gpt-3.5-turbo'
         ];
         
         $clientConfig = [
