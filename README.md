@@ -1,9 +1,9 @@
 # OpenAI PHP Package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
-[![Total Downloads](https://img.shields.io/packagist/dt/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
-[![License](https://img.shields.io/packagist/l/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
-[![PHP Version](https://img.shields.io/packagist/php-v/sanjarani/openai.svg)](https://packagist.org/packages/sanjarani/openai)
+[![نسخه](https://img.shields.io/packagist/v/sanjarani/openai.svg?style=flat-square)](https://packagist.org/packages/sanjarani/openai)
+[![دانلودها](https://img.shields.io/packagist/dt/sanjarani/openai.svg?style=flat-square)](https://packagist.org/packages/sanjarani/openai)
+[![مجوز](https://img.shields.io/packagist/l/sanjarani/openai.svg?style=flat-square)](https://packagist.org/packages/sanjarani/openai)
+[![نسخه PHP](https://img.shields.io/packagist/php-v/sanjarani/openai.svg?style=flat-square)](https://packagist.org/packages/sanjarani/openai)
 
 [English](#english) | [فارسی](#فارسی)
 
