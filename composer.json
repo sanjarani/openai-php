@@ -1,10 +1,18 @@
 {
     "name": "sanjarani/openai-php",
-    "description": "A PHP package for OpenAI API",
+    "description": "A PHP SDK for the OpenAI API with support for all endpoints and features",
     "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kiyarash Sanjarani",
+            "email": "kiyarash.sanjarani@gmail.com"
+        }
+    ],
     "require": {
         "php": "^7.4|^8.0",
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.0"
@@ -13,5 +21,17 @@
         "psr-4": {
             "Sanjarani\\OpenAI\\": "src/"
         }
-    }
+    },
+    "keywords": [
+        "openai",
+        "gpt",
+        "api",
+        "sdk",
+        "php",
+        "ai",
+        "chatgpt",
+        "dall-e",
+        "whisper",
+        "fine-tuning"
+    ]
 } 
