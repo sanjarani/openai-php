@@ -8,10 +8,14 @@ use GuzzleHttp\Exception\GuzzleException;
 class FineTuneEndpoint
 {
     private Client $client;
+    private string $defaultModel;
+    private string $versionPrefix;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, string $defaultModel = 'davinci', string $versionPrefix = '/v1')
     {
         $this->client = $client;
+        $this->defaultModel = $defaultModel;
+        $this->versionPrefix = $versionPrefix;
     }
 
     /**
@@ -23,7 +27,11 @@ class FineTuneEndpoint
      */
     public function create(array $params): array
     {
-        $response = $this->client->post('/fine-tunes', [
+        if (!isset($params['model']) || empty($params['model'])) {
+            $params['model'] = $this->defaultModel;
+        }
+
+        $response = $this->client->post(ltrim($this->versionPrefix . '/fine-tunes', '/'), [
             'json' => $params
         ]);
 
@@ -38,7 +46,7 @@ class FineTuneEndpoint
      */
     public function list(): array
     {
-        $response = $this->client->get('/fine-tunes');
+        $response = $this->client->get(ltrim($this->versionPrefix . '/fine-tunes', '/'));
 
         return json_decode($response->getBody()->getContents(), true);
     }
@@ -52,7 +60,7 @@ class FineTuneEndpoint
      */
     public function retrieve(string $fineTuneId): array
     {
-        $response = $this->client->get("/fine-tunes/{$fineTuneId}");
+        $response = $this->client->get(ltrim($this->versionPrefix . "/fine-tunes/{$fineTuneId}", '/'));
 
         return json_decode($response->getBody()->getContents(), true);
     }
@@ -66,7 +74,7 @@ class FineTuneEndpoint
      */
     public function cancel(string $fineTuneId): array
     {
-        $response = $this->client->post("/fine-tunes/{$fineTuneId}/cancel");
+        $response = $this->client->post(ltrim($this->versionPrefix . "/fine-tunes/{$fineTuneId}/cancel", '/'));
 
         return json_decode($response->getBody()->getContents(), true);
     }
@@ -80,7 +88,7 @@ class FineTuneEndpoint
      */
     public function listEvents(string $fineTuneId): array
     {
-        $response = $this->client->get("/fine-tunes/{$fineTuneId}/events");
+        $response = $this->client->get(ltrim($this->versionPrefix . "/fine-tunes/{$fineTuneId}/events", '/'));
 
         return json_decode($response->getBody()->getContents(), true);
     }
@@ -94,7 +102,7 @@ class FineTuneEndpoint
      */
     public function delete(string $model): array
     {
-        $response = $this->client->delete("/models/{$model}");
+        $response = $this->client->delete(ltrim($this->versionPrefix . "/models/{$model}", '/'));
 
         return json_decode($response->getBody()->getContents(), true);
     }

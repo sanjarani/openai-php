@@ -17,6 +17,7 @@ class OpenAI
     private string $apiKey;
     private Client $client;
     private string $baseUrl;
+    private string $apiVersion;
     private array $config;
     private array $defaultModels;
 
@@ -27,7 +28,9 @@ class OpenAI
     {
         $this->config = $config;
         $this->apiKey = $config['api_key'] ?? '';
-        $this->baseUrl = 'https://api.openai.com/v1';
+        $this->apiVersion = $config['api_version'] ?? self::API_VERSION_V1;
+        $this->baseUrl = rtrim($config['base_url'] ?? 'https://api.openai.com', '/');
+        
         $this->defaultModels = $config['models'] ?? [
             'chat' => 'gpt-3.5-turbo',
             'completion' => 'text-davinci-003',
@@ -52,7 +55,14 @@ class OpenAI
         }
 
         $this->client = new Client($clientConfig);
-        var_dump($this->client);
+    }
+
+    /**
+     * Get the API version with leading slash
+     */
+    public function getVersionPrefix(): string
+    {
+        return '/' . $this->apiVersion;
     }
 
     public function getDefaultModel(string $type): string
@@ -62,36 +72,36 @@ class OpenAI
 
     public function chat(): ChatEndpoint
     {
-        return new ChatEndpoint($this->client, $this->getDefaultModel('chat'));
+        return new ChatEndpoint($this->client, $this->getDefaultModel('chat'), $this->getVersionPrefix());
     }
 
     public function completion(): CompletionEndpoint
     {
-        return new CompletionEndpoint($this->client, $this->getDefaultModel('completion'));
+        return new CompletionEndpoint($this->client, $this->getDefaultModel('completion'), $this->getVersionPrefix());
     }
 
     public function embedding(): EmbeddingEndpoint
     {
-        return new EmbeddingEndpoint($this->client, $this->getDefaultModel('embedding'));
+        return new EmbeddingEndpoint($this->client, $this->getDefaultModel('embedding'), $this->getVersionPrefix());
     }
 
     public function image(): ImageEndpoint
     {
-        return new ImageEndpoint($this->client, $this->getDefaultModel('image'));
+        return new ImageEndpoint($this->client, $this->getDefaultModel('image'), $this->getVersionPrefix());
     }
 
     public function moderation(): ModerationEndpoint
     {
-        return new ModerationEndpoint($this->client);
+        return new ModerationEndpoint($this->client, $this->getVersionPrefix());
     }
 
     public function fineTune(): FineTuneEndpoint
     {
-        return new FineTuneEndpoint($this->client, $this->getDefaultModel('fine_tune'));
+        return new FineTuneEndpoint($this->client, $this->getDefaultModel('fine_tune'), $this->getVersionPrefix());
     }
 
     public function model(): ModelEndpoint
     {
-        return new ModelEndpoint($this->client);
+        return new ModelEndpoint($this->client, $this->getVersionPrefix());
     }
 } 

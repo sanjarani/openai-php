@@ -8,10 +8,14 @@ use GuzzleHttp\Exception\GuzzleException;
 class EmbeddingEndpoint
 {
     private Client $client;
+    private string $defaultModel;
+    private string $versionPrefix;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, string $defaultModel = 'text-embedding-ada-002', string $versionPrefix = '/v1')
     {
         $this->client = $client;
+        $this->defaultModel = $defaultModel;
+        $this->versionPrefix = $versionPrefix;
     }
 
     /**
@@ -23,7 +27,11 @@ class EmbeddingEndpoint
      */
     public function create(array $params): array
     {
-        $response = $this->client->post('/embeddings', [
+        if (!isset($params['model']) || empty($params['model'])) {
+            $params['model'] = $this->defaultModel;
+        }
+
+        $response = $this->client->post(ltrim($this->versionPrefix . '/embeddings', '/'), [
             'json' => $params
         ]);
 

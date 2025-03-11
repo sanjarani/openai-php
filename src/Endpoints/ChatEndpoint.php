@@ -9,11 +9,13 @@ class ChatEndpoint
 {
     private Client $client;
     private string $defaultModel;
+    private string $versionPrefix;
 
-    public function __construct(Client $client, string $defaultModel = 'gpt-3.5-turbo')
+    public function __construct(Client $client, string $defaultModel = 'gpt-3.5-turbo', string $versionPrefix = '/v1')
     {
         $this->client = $client;
         $this->defaultModel = $defaultModel;
+        $this->versionPrefix = $versionPrefix;
     }
 
     /**
@@ -25,7 +27,7 @@ class ChatEndpoint
      */
     public function create(array $params): array
     {
-        if (empty($params['model'])) {
+        if (!isset($params['model']) || empty($params['model'])) {
             $params['model'] = $this->defaultModel;
         }
 
@@ -34,17 +36,28 @@ class ChatEndpoint
         }
 
         try {
-            $response = $this->client->post('chat/completions', [
+//            // دیباگ پارامترها قبل از ارسال
+//            echo "\n=== Request Details ===\n";
+//            echo "URL: " . $this->client->getConfig('base_uri') . "v1/chat/completions\n";
+//            echo "Headers: " . json_encode($this->client->getConfig('headers'), JSON_PRETTY_PRINT) . "\n";
+//            echo "Params: " . json_encode($params, JSON_PRETTY_PRINT) . "\n";
+//            echo "==================\n\n";
+
+            $response = $this->client->request('POST', ltrim($this->versionPrefix . '/chat/completions', '/'), [
                 'json' => $params,
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ]
             ]);
 
+            $statusCode = $response->getStatusCode();
             $body = $response->getBody()->getContents();
-            
-            // برای دیباگ
-            echo "Raw Response: " . $body . "\n";
+
+//            // دیباگ پاسخ
+//            echo "\n=== Response Details ===\n";
+//            echo "Status Code: " . $statusCode . "\n";
+//            echo "Body: " . $body . "\n";
+//            echo "==================\n\n";
             
             $data = json_decode($body, true);
             
@@ -57,8 +70,8 @@ class ChatEndpoint
                 throw new \Exception('OpenAI API Error: ' . ($data['error']['message'] ?? 'Unknown error'));
             }
 
-            if ($response->getStatusCode() !== 200) {
-                throw new \Exception('HTTP Error: ' . $response->getStatusCode() . ' - ' . $body);
+            if ($statusCode !== 200) {
+                throw new \Exception("HTTP Error: Status $statusCode\nResponse: $body");
             }
 
             return $data;
@@ -87,7 +100,7 @@ class ChatEndpoint
 
         $params['stream'] = true;
 
-        $response = $this->client->post('/chat/completions', [
+        $response = $this->client->post(ltrim($this->versionPrefix . '/chat/completions', '/'), [
             'json' => $params
         ]);
 
