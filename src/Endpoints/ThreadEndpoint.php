@@ -17,7 +17,7 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param array $parameters
      * @return array
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): array
     {
         return $this->post('/threads', $parameters);
     }
@@ -28,7 +28,7 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param string $threadId
      * @return array
      */
-    public function retrieve(string $threadId)
+    public function retrieve(string $threadId): array
     {
         return $this->get("/threads/{$threadId}");
     }
@@ -40,7 +40,7 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param array $parameters
      * @return array
      */
-    public function addMessage(string $threadId, array $parameters)
+    public function addMessage(string $threadId, array $parameters): array
     {
         return $this->post("/threads/{$threadId}/messages", $parameters);
     }
@@ -52,7 +52,7 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param array $parameters
      * @return array
      */
-    public function listMessages(string $threadId, array $parameters = [])
+    public function listMessages(string $threadId, array $parameters = []): array
     {
         return $this->get("/threads/{$threadId}/messages", $parameters);
     }
@@ -64,7 +64,7 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param array $parameters
      * @return array
      */
-    public function run(string $threadId, array $parameters)
+    public function run(string $threadId, array $parameters): array
     {
         return $this->post("/threads/{$threadId}/runs", $parameters);
     }
@@ -76,7 +76,7 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param string $runId
      * @return array
      */
-    public function retrieveRun(string $threadId, string $runId)
+    public function retrieveRun(string $threadId, string $runId): array
     {
         return $this->get("/threads/{$threadId}/runs/{$runId}");
     }
@@ -87,8 +87,8 @@ class ThreadEndpoint extends AbstractEndpoint
      * @param string $threadId
      * @return array
      */
-    public function delete(string $threadId)
+    public function delete(string $uri): array
     {
-        return $this->delete("/threads/{$threadId}");
+        return parent::delete("/threads/{$uri}");
     }
 } 
