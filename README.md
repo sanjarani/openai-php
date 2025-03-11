@@ -7,6 +7,48 @@
 
 A PHP package for OpenAI API integration with Laravel support. This package supports all OpenAI endpoints and is designed for use in PHP and Laravel projects.
 
+## Features & Capabilities
+
+- [Chat with OpenAI Models](#chat-endpoint)
+  - Create conversations with various models
+  - Streaming support for live responses
+  - Configure temperature and max_tokens parameters
+
+- [Text Completion](#completion-endpoint)
+  - Automatic text completion
+  - Streaming support
+  - Various output parameter configurations
+
+- [Text to Vector Conversion](#embedding-endpoint)
+  - Create embeddings for text
+  - Suitable for NLP and semantic search
+
+- [Image Operations](#image-endpoint)
+  - Generate images from text
+  - Create variations of existing images
+  - Edit images with masks
+
+- [Content Moderation](#moderation-endpoint)
+  - Detect inappropriate content
+  - Automatic text filtering
+
+- [Custom Model Training](#finetune-endpoint)
+  - Create custom models
+  - Manage fine-tuning process
+  - Monitor and control training
+
+- [Model Management](#model-endpoint)
+  - Access model list
+  - Retrieve specific model information
+  - Delete custom models
+
+- [Assistants & Tools](#assistants--tools)
+  - Create intelligent assistants
+  - Use various tools
+    - Function Tool for custom functions
+    - Retrieval Tool for document search
+    - Code Interpreter for code execution
+
 ## Author
 
 - **Name:** Kiyarash Sanjarani Vahed
@@ -596,6 +638,48 @@ This package is developed by ARYMU LLC.
 # فارسی
 
 یک پکیج PHP برای کار با API OpenAI که با Laravel سازگار است. این پکیج از تمام endpoint های OpenAI پشتیبانی می‌کند و برای استفاده در پروژه‌های PHP و Laravel طراحی شده است.
+
+## امکانات و قابلیت‌ها
+
+- [چت و گفتگو با مدل‌های OpenAI](#chat-endpoint)
+  - ایجاد چت با مدل‌های مختلف
+  - پشتیبانی از streaming برای پاسخ‌های زنده
+  - تنظیم پارامترهای temperature و max_tokens
+
+- [تکمیل متن](#completion-endpoint)
+  - تکمیل خودکار متن
+  - پشتیبانی از streaming
+  - تنظیم پارامترهای مختلف برای خروجی
+
+- [تبدیل متن به بردار](#embedding-endpoint)
+  - ایجاد embedding برای متن‌ها
+  - مناسب برای پردازش زبان طبیعی و جستجوی معنایی
+
+- [کار با تصاویر](#image-endpoint)
+  - تولید تصویر از متن
+  - ایجاد تغییرات در تصاویر موجود
+  - ویرایش تصاویر با ماسک
+
+- [بررسی محتوا](#moderation-endpoint)
+  - تشخیص محتوای نامناسب
+  - فیلترینگ خودکار متن
+
+- [آموزش مدل‌های سفارشی](#finetune-endpoint)
+  - ایجاد مدل‌های اختصاصی
+  - مدیریت فرآیند fine-tuning
+  - کنترل و نظارت بر آموزش
+
+- [مدیریت مدل‌ها](#model-endpoint)
+  - دسترسی به لیست مدل‌ها
+  - دریافت اطلاعات مدل‌های خاص
+  - حذف مدل‌های سفارشی
+
+- [دستیارها و ابزارها](#assistants--tools)
+  - ایجاد دستیارهای هوشمند
+  - استفاده از ابزارهای مختلف
+    - Function Tool برای توابع سفارشی
+    - Retrieval Tool برای جستجو در اسناد
+    - Code Interpreter برای اجرای کد
 
 ## نویسنده
 
