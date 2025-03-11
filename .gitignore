@@ -4,4 +4,4 @@ check/
 .vscode/
 *.log
 .DS_Store
-test.php
+./test.php

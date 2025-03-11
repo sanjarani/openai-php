@@ -25,7 +25,7 @@ class ChatEndpoint
      */
     public function create(array $params): array
     {
-        if (!isset($params['model']) || empty($params['model'])) {
+        if (empty($params['model'])) {
             $params['model'] = $this->defaultModel;
         }
 

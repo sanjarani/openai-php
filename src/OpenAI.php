@@ -27,7 +27,7 @@ class OpenAI
     {
         $this->config = $config;
         $this->apiKey = $config['api_key'] ?? '';
-        $this->baseUrl = $config['base_url'] ?? 'https://api.openai.com/v1';
+        $this->baseUrl = 'https://api.openai.com/v1';
         $this->defaultModels = $config['models'] ?? [
             'chat' => 'gpt-3.5-turbo',
             'completion' => 'text-davinci-003',
@@ -37,7 +37,7 @@ class OpenAI
         
         $clientConfig = [
             'base_uri' => $this->baseUrl,
-            'headers' => $config['headers'] ?? [
+            'headers' => [
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
                 'OpenAI-Organization' => $config['organization_id'] ?? null,
@@ -52,6 +52,7 @@ class OpenAI
         }
 
         $this->client = new Client($clientConfig);
+        var_dump($this->client);
     }
 
     public function getDefaultModel(string $type): string
