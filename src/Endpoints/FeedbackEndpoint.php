@@ -9,7 +9,7 @@ class FeedbackEndpoint extends AbstractEndpoint
      */
     public function create(string $threadId, string $messageId, array $data): array
     {
-        return $this->post("/threads/{$threadId}/messages/{$messageId}/ratings", $data);
+        return $this->post("/threads/{$threadId}/messages/{$messageId}/feedback", $data);
     }
 
     /**
@@ -17,7 +17,7 @@ class FeedbackEndpoint extends AbstractEndpoint
      */
     public function list(string $threadId, string $messageId, array $params = []): array
     {
-        return $this->get("/threads/{$threadId}/messages/{$messageId}/ratings", $params);
+        return $this->get("/threads/{$threadId}/messages/{$messageId}/feedback", $params);
     }
 
     /**
@@ -25,7 +25,7 @@ class FeedbackEndpoint extends AbstractEndpoint
      */
     public function retrieve(string $threadId, string $messageId, string $feedbackId): array
     {
-        return $this->get("/threads/{$threadId}/messages/{$messageId}/ratings/{$feedbackId}");
+        return $this->get("/threads/{$threadId}/messages/{$messageId}/feedback/{$feedbackId}");
     }
 
     /**
@@ -33,7 +33,7 @@ class FeedbackEndpoint extends AbstractEndpoint
      */
     public function update(string $threadId, string $messageId, string $feedbackId, array $data): array
     {
-        return $this->post("/threads/{$threadId}/messages/{$messageId}/ratings/{$feedbackId}", $data);
+        return $this->post("/threads/{$threadId}/messages/{$messageId}/feedback/{$feedbackId}", $data);
     }
 
     /**
@@ -41,6 +41,6 @@ class FeedbackEndpoint extends AbstractEndpoint
      */
     public function deleteFeedback(string $threadId, string $messageId, string $feedbackId): array
     {
-        return $this->delete("/threads/{$threadId}/messages/{$messageId}/ratings/{$feedbackId}");
+        return $this->delete("/threads/{$threadId}/messages/{$messageId}/feedback/{$feedbackId}");
     }
 } 
