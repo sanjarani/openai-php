@@ -70,5 +70,5 @@ echo "امتیاز جدید: {$updatedFeedback['rating']}\n";
 echo "نظر جدید: {$updatedFeedback['comment']}\n\n";
 
 // حذف بازخورد
-$result = $openai->feedback()->delete('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+$result = $openai->feedback()->deleteFeedback('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
 echo "بازخورد با موفقیت حذف شد.\n"; 

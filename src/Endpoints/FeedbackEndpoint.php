@@ -29,7 +29,7 @@ class FeedbackEndpoint extends AbstractEndpoint
     }
 
     /**
-     * به‌روزرسانی یک بازخورد
+     * به‌روزرسانی بازخورد
      */
     public function update(string $threadId, string $runId, string $responseId, string $feedbackId, array $data): array
     {
@@ -37,9 +37,9 @@ class FeedbackEndpoint extends AbstractEndpoint
     }
 
     /**
-     * حذف یک بازخورد
+     * حذف بازخورد
      */
-    public function delete(string $threadId, string $runId, string $responseId, string $feedbackId): array
+    public function deleteFeedback(string $threadId, string $runId, string $responseId, string $feedbackId): array
     {
         return $this->delete("/threads/{$threadId}/runs/{$runId}/responses/{$responseId}/feedback/{$feedbackId}");
     }
