@@ -13,6 +13,11 @@ use Sanjarani\OpenAI\Endpoints\ModelEndpoint;
 use Sanjarani\OpenAI\Endpoints\ModerationEndpoint;
 use Sanjarani\OpenAI\Endpoints\AssistantEndpoint;
 use Sanjarani\OpenAI\Endpoints\ThreadEndpoint;
+use Sanjarani\OpenAI\Endpoints\WebSearchEndpoint;
+use Sanjarani\OpenAI\Endpoints\FileSearchEndpoint;
+use Sanjarani\OpenAI\Endpoints\ResponseEndpoint;
+use Sanjarani\OpenAI\Endpoints\AgentEndpoint;
+use Sanjarani\OpenAI\Endpoints\FeedbackEndpoint;
 
 class OpenAI
 {
@@ -124,5 +129,45 @@ class OpenAI
     public function threads(): ThreadEndpoint
     {
         return new ThreadEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * جستجو در وب
+     */
+    public function webSearch(): WebSearchEndpoint
+    {
+        return new WebSearchEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * جستجوی فایل‌ها
+     */
+    public function fileSearch(): FileSearchEndpoint
+    {
+        return new FileSearchEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * مدیریت پاسخ‌ها
+     */
+    public function responses(): ResponseEndpoint
+    {
+        return new ResponseEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * مدیریت عامل‌ها
+     */
+    public function agents(): AgentEndpoint
+    {
+        return new AgentEndpoint($this->client, $this->getVersionPrefix());
+    }
+
+    /**
+     * مدیریت بازخوردها
+     */
+    public function feedback(): FeedbackEndpoint
+    {
+        return new FeedbackEndpoint($this->client, $this->getVersionPrefix());
     }
 } 

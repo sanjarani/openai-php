@@ -1475,4 +1475,206 @@ $updatedResponse = OpenAI::responses()->update('thread_abc123', 'run_xyz789', 'r
 ]);
 ```
 
+### Web Search
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+
+$openai = new OpenAI([
+    'api_key' => 'your-api-key-here'
+]);
+
+// جستجوی ساده در وب
+$results = $openai->webSearch()->search([
+    'query' => 'آخرین اخبار هوش مصنوعی',
+    'limit' => 10
+]);
+
+// جستجو با فیلتر
+$filteredResults = $openai->webSearch()->getResults('هوش مصنوعی', [
+    'language' => 'fa',
+    'date_range' => 'last_week',
+    'site' => 'wikipedia.org'
+]);
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+
+// جستجوی ساده
+$results = OpenAI::webSearch()->search([
+    'query' => 'آخرین اخبار هوش مصنوعی'
+]);
+
+// جستجو با فیلتر
+$filteredResults = OpenAI::webSearch()->getResults('هوش مصنوعی', [
+    'language' => 'fa'
+]);
+```
+
+### File Search
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+
+$openai = new OpenAI([
+    'api_key' => 'your-api-key-here'
+]);
+
+// جستجوی ساده فایل
+$results = $openai->fileSearch()->search('config.php', [
+    'directory' => '/src',
+    'extensions' => ['php', 'json']
+]);
+
+// جستجوی پیشرفته
+$advancedResults = $openai->fileSearch()->advancedSearch([
+    'pattern' => '*.php',
+    'content' => 'OpenAI',
+    'modified_after' => '2024-01-01'
+]);
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+
+// جستجوی ساده
+$results = OpenAI::fileSearch()->search('config.php');
+
+// جستجوی پیشرفته
+$advancedResults = OpenAI::fileSearch()->advancedSearch([
+    'pattern' => '*.php'
+]);
+```
+
+### Agents SDK
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+
+$openai = new OpenAI([
+    'api_key' => 'your-api-key-here'
+]);
+
+// ایجاد یک عامل جدید
+$agent = $openai->agents()->create([
+    'name' => 'دستیار برنامه‌نویسی',
+    'description' => 'یک عامل هوشمند برای کمک به برنامه‌نویسی',
+    'capabilities' => [
+        'code_completion',
+        'code_review',
+        'debugging'
+    ],
+    'model' => 'gpt-4-turbo-preview'
+]);
+
+// دریافت لیست عامل‌ها
+$agents = $openai->agents()->list();
+
+// به‌روزرسانی یک عامل
+$updatedAgent = $openai->agents()->update('agent_abc123', [
+    'name' => 'دستیار برنامه‌نویسی پیشرفته'
+]);
+
+// اجرای یک عامل
+$result = $openai->agents()->run('agent_abc123', [
+    'task' => 'بررسی کد'
+]);
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+
+// ایجاد عامل
+$agent = OpenAI::agents()->create([
+    'name' => 'دستیار برنامه‌نویسی'
+]);
+
+// لیست عامل‌ها
+$agents = OpenAI::agents()->list();
+
+// به‌روزرسانی عامل
+$updatedAgent = OpenAI::agents()->update('agent_abc123', [
+    'name' => 'دستیار به‌روز شده'
+]);
+
+// اجرای عامل
+$result = OpenAI::agents()->run('agent_abc123', [
+    'task' => 'بررسی کد'
+]);
+```
+
+### Feedback API
+
+```php
+// PHP ساده
+use Sanjarani\OpenAI\OpenAI;
+
+$openai = new OpenAI([
+    'api_key' => 'your-api-key-here'
+]);
+
+// ارسال بازخورد برای یک پاسخ
+$feedback = $openai->feedback()->create('thread_abc123', 'run_xyz789', 'resp_abc123', [
+    'rating' => 5,
+    'comment' => 'پاسخ بسیار مفید بود',
+    'categories' => [
+        'accuracy' => 5,
+        'helpfulness' => 5,
+        'clarity' => 4
+    ]
+]);
+
+// دریافت لیست بازخوردها
+$feedbacks = $openai->feedback()->list('thread_abc123', 'run_xyz789', 'resp_abc123');
+
+// دریافت یک بازخورد خاص
+$feedback = $openai->feedback()->retrieve('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+
+// به‌روزرسانی بازخورد
+$updatedFeedback = $openai->feedback()->update(
+    'thread_abc123',
+    'run_xyz789',
+    'resp_abc123',
+    'feedback_abc123',
+    [
+        'rating' => 4,
+        'comment' => 'پاسخ خوب بود اما می‌توانست بهتر باشد'
+    ]
+);
+
+// حذف بازخورد
+$result = $openai->feedback()->delete('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+
+// Laravel
+use Sanjarani\OpenAI\Facades\OpenAI;
+
+// ارسال بازخورد
+$feedback = OpenAI::feedback()->create('thread_abc123', 'run_xyz789', 'resp_abc123', [
+    'rating' => 5,
+    'comment' => 'پاسخ بسیار مفید بود'
+]);
+
+// دریافت لیست بازخوردها
+$feedbacks = OpenAI::feedback()->list('thread_abc123', 'run_xyz789', 'resp_abc123');
+
+// دریافت یک بازخورد خاص
+$feedback = OpenAI::feedback()->retrieve('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+
+// به‌روزرسانی بازخورد
+$updatedFeedback = OpenAI::feedback()->update(
+    'thread_abc123',
+    'run_xyz789',
+    'resp_abc123',
+    'feedback_abc123',
+    [
+        'rating' => 4,
+        'comment' => 'پاسخ خوب بود اما می‌توانست بهتر باشد'
+    ]
+);
+
+// حذف بازخورد
+$result = OpenAI::feedback()->delete('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+```
+
 [... rest of the documentation ...]
