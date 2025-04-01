@@ -8,8 +8,8 @@ $openai = new OpenAI([
     'api_key' => 'your-api-key-here'
 ]);
 
-// ارسال بازخورد برای یک پاسخ
-$feedback = $openai->feedback()->create('thread_abc123', 'run_xyz789', 'resp_abc123', [
+// ارسال بازخورد برای یک پیام
+$feedback = $openai->feedback()->create('thread_abc123', 'msg_abc123', [
     'rating' => 5,
     'comment' => 'پاسخ بسیار مفید بود',
     'categories' => [
@@ -28,7 +28,7 @@ echo "شناسه: {$feedback['id']}\n";
 echo "امتیاز: {$feedback['rating']}\n\n";
 
 // دریافت لیست بازخوردها
-$feedbacks = $openai->feedback()->list('thread_abc123', 'run_xyz789', 'resp_abc123', [
+$feedbacks = $openai->feedback()->list('thread_abc123', 'msg_abc123', [
     'limit' => 10,
     'order' => 'desc'
 ]);
@@ -41,7 +41,7 @@ foreach ($feedbacks['data'] as $feedback) {
 }
 
 // دریافت یک بازخورد خاص
-$feedback = $openai->feedback()->retrieve('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+$feedback = $openai->feedback()->retrieve('thread_abc123', 'msg_abc123', 'feedback_abc123');
 
 echo "جزئیات بازخورد:\n";
 echo "شناسه: {$feedback['id']}\n";
@@ -56,8 +56,7 @@ echo "\n";
 // به‌روزرسانی بازخورد
 $updatedFeedback = $openai->feedback()->update(
     'thread_abc123',
-    'run_xyz789',
-    'resp_abc123',
+    'msg_abc123',
     'feedback_abc123',
     [
         'rating' => 4,
@@ -70,5 +69,5 @@ echo "امتیاز جدید: {$updatedFeedback['rating']}\n";
 echo "نظر جدید: {$updatedFeedback['comment']}\n\n";
 
 // حذف بازخورد
-$result = $openai->feedback()->deleteFeedback('thread_abc123', 'run_xyz789', 'resp_abc123', 'feedback_abc123');
+$result = $openai->feedback()->deleteFeedback('thread_abc123', 'msg_abc123', 'feedback_abc123');
 echo "بازخورد با موفقیت حذف شد.\n"; 
