@@ -17,7 +17,6 @@ use Sanjarani\OpenAI\Endpoints\WebSearchEndpoint;
 use Sanjarani\OpenAI\Endpoints\FileSearchEndpoint;
 use Sanjarani\OpenAI\Endpoints\ResponseEndpoint;
 use Sanjarani\OpenAI\Endpoints\AgentEndpoint;
-use Sanjarani\OpenAI\Endpoints\FeedbackEndpoint;
 
 class OpenAI
 {
@@ -51,7 +50,7 @@ class OpenAI
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
                 'OpenAI-Organization' => $config['organization_id'] ?? null,
-                'OpenAI-Beta' => 'assistants=v2,feedback=v1'
+                'OpenAI-Beta' => 'assistants=v2'
             ],
             'timeout' => $config['timeout'] ?? 30,
             'http_errors' => false,
@@ -161,13 +160,5 @@ class OpenAI
     public function agents(): AgentEndpoint
     {
         return new AgentEndpoint($this->client, $this->getVersionPrefix());
-    }
-
-    /**
-     * مدیریت بازخوردها
-     */
-    public function feedback(): FeedbackEndpoint
-    {
-        return new FeedbackEndpoint($this->client, $this->getVersionPrefix());
     }
 } 
